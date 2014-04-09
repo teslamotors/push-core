@@ -144,6 +144,27 @@ Push::MessageGcm.create(
     collapse_key: 'MSG')
 ```
 
+## Tracking your own Message IDs
+
+Usually `push-core` will show it's internal message IDs in the logs, which are monotonically increasing.
+
+If you have your own message-IDs in your system, and want to track them during the message delivery, so they show up in the logs of the `push-core` gem, you can add this during message creation:
+
+```
+    ext_id: your_external_id_here
+
+```
+
+You can also set the prefix under which your message ID will show up in the logs:
+
+```
+    Push.ext_id_tag = "MyID:"   # will pre-fix the above message ID with this string
+```
+
+This can be useful if you want to automatically ingest your log files for analytics.
+
+Furthermore you can hand your message-ID to the mobile device, so it can either log it, or you can hit an API endpoint to record the time the message was actually received. This way you can measure end-to-end delivery times.
+
 ## Feedback processing
 
 The push providers return feedback in various ways and these are captured and stored in the `push_feedback` table. The installer installs the `lib/push/feedback_processor.rb` file which is by default called every 60 seconds. In this file you can process the feedback which is different for every application.
