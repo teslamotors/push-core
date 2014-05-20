@@ -22,8 +22,8 @@ module Push
           self.delivered_at = Time.now
           self.save!(:validate => false)
         end
-        ext_id_msg = @ext_id ? "#{Push.ext_id_tag} #{@ext_id}" : nil
-        Push::Daemon.logger.info ["#{connection.name}] Message #{id}", ext_id_msg, "delivered to #{device}" ].compact.join(',')
+        ext_id_msg = self.ext_id ? "#{Push.ext_id_tag} #{self.ext_id}" : nil
+        Push::Daemon.logger.info ["#{connection.name}] Message #{id}", ext_id_msg, "delivered to #{device}" ].compact.join(' , ')
       rescue Push::DeliveryError, Push::DisconnectionError => error
         handle_delivery_error(error, connection)
         raise
